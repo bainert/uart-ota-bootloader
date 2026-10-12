@@ -1,0 +1,30 @@
+# ---------- Keil MDK-ARM 编译产物 ----------
+*.o
+*.d
+*.crf
+*.axf
+*.hex
+*.map
+*.htm
+*.lnp
+*.dep
+*.lst
+build_log.htm
+MDK-ARM/RTE/
+Objects/
+Listings/
+
+# Keil 自动生成的重复空文件（真正源码在 MDK-ARM/interface/）
+MDK-ARM/uart_bootloader/int_bootloader.c
+
+# 机器/用户相关的 Keil / VSCode 噪音
+MDK-ARM/.vscode/*.log
+MDK-ARM/.vscode/*.lock
+*.uvguix.*
+*.Bak
+
+# ---------- 操作系统 / 编辑器垃圾 ----------
+.DS_Store
+Thumbs.db
+*.swp
+*~
