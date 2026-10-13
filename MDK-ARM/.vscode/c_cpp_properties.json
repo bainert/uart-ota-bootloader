@@ -9,6 +9,7 @@
                 "f:\\OTA_BootLoader\\uart_bootloader\\Drivers\\CMSIS\\Device\\ST\\STM32F1xx\\Include",
                 "f:\\OTA_BootLoader\\uart_bootloader\\Drivers\\CMSIS\\Include",
                 "f:\\OTA_BootLoader\\uart_bootloader\\MDK-ARM\\interface",
+                "f:\\OTA_BootLoader\\uart_bootloader\\MDK-ARM\\app",
                 "F:\\keil_v5\\ARM\\ARMCC\\include",
                 "F:\\keil_v5\\ARM\\ARMCC\\include\\rw",
                 "f:\\OTA_BootLoader\\uart_bootloader\\MDK-ARM",

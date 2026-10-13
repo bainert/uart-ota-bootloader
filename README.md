@@ -87,14 +87,14 @@ flowchart TD
     Jump --> App([Application 运行])
 ```
 
-关键实现要点（对应 `MDK-ARM/interface/int_bootloader.c`）：
+关键实现要点（接口层 `MDK-ARM/interface/int_bootloader.c`）：
 
 1. **中断驱动接收**：使用 `HAL_UARTEx_ReceiveToIdle_IT()`，以"空闲线（Idle Line）"判定一帧数据结束，
    全程中断驱动，主循环不阻塞轮询。
 2. **半字写入 Flash**：STM32 Flash 以 16 位（halfword）为最小编程单位，接收缓冲按双字节拼装后调用
    `HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, ...)`。
 3. **跨包奇数字节拼接**：当某次接收长度为奇数时，会把最后一个字节暂存，与下一组数据的首字节拼成完整的半字，
-   保证任意长度固件都能正确落盘（见 `data_remain_flag` / `remain_data` 逻辑）。
+   保证任意长度固件（含奇数长度）都能正确落盘（见 `half_carry` / `half_has_carry` 逻辑）。
 4. **跳转前合法性校验**：跳转前检查**复位向量地址**是否落在 A 区范围内、**栈顶指针（MSP）**是否落在 SRAM 范围内，
    避免跳到一个非法/未烧录区域导致死机。
 5. **向量表重映射 + 干净跳转**：关闭中断 → `HAL_DeInit()` → 设置主堆栈指针 `__set_MSP()` →
@@ -111,15 +111,19 @@ uart_bootloader/
 │   └── Src/                  # 源文件（main.c / usart.c / gpio.c ...）
 ├── Drivers/                  # STM32 HAL 库 + CMSIS（CubeMX 引入，遵循其 LICENSE）
 ├── MDK-ARM/
-│   ├── interface/            # ★ Bootloader 核心实现
+│   ├── interface/            # 接口层：底层能力（接收 / 擦写 Flash / 校验 / 跳转）
 │   │   ├── int_bootloader.h
-│   │   └── int_bootloader.c  # 接收 / 擦写 Flash / 校验 / 跳转
+│   │   └── int_bootloader.c
+│   ├── app/                  # ★ 应用层：与用户交互（指令解析 / 流程编排 / 回显）
+│   │   ├── app_boot.h
+│   │   └── app_boot.c
 │   └── uart_bootloader/      # Keil 工程与编译输出（*.axf / *.hex / 中间文件）
 └── uart_bootloader.ioc       # STM32CubeMX 工程配置
 ```
 
-> 实际 Flash 烧录逻辑集中在 `MDK-ARM/interface/int_bootloader.c`，
-> 入口 `int_bootloader_init()` 在 `main.c` 中调用，跳转 `int_bootloader_jump_to_app()` 在主循环中触发。
+> 分层关系：`app_boot.c`（应用层）决定"**什么时候干**"，`int_bootloader.c`（接口层）提供"**怎么干**"。
+> 入口 `app_boot_init()` 在 `main.c` 里调用一次，之后主循环反复调用 `app_boot_poll()`
+> 驱动状态机（等待指令 → 擦除 → 接收烧录 → 校验 → 跳转）。
 
 ---
 

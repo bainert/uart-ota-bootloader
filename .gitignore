@@ -23,6 +23,14 @@ MDK-ARM/.vscode/*.lock
 *.uvguix.*
 *.Bak
 
+# 构建日志
+build_out.txt
+
+# AI 助手记忆目录（不进入代码仓库）
+.workbuddy/
+.workbuddy
+.workbuddy/memory/
+
 # ---------- 操作系统 / 编辑器垃圾 ----------
 .DS_Store
 Thumbs.db

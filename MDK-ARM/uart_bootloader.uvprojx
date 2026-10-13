@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;./interface</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;./interface;./app</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -508,6 +508,21 @@
               <FileName>int_bootloader.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\interface\int_bootloader.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>app</GroupName>
+          <Files>
+            <File>
+              <FileName>app_boot.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\app\app_boot.h</FilePath>
+            </File>
+            <File>
+              <FileName>app_boot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\app_boot.c</FilePath>
             </File>
           </Files>
         </Group>

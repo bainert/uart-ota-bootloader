@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "int_bootloader.h"
+#include "app_boot.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-extern uint16_t uart_rx_buf_size_sum;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,19 +89,15 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  int_bootloader_init();
+  app_boot_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    //打印数据总长度
-    printf("uart_rx_buf_size_sum: %d\r\n", uart_rx_buf_size_sum);
-    HAL_Delay(1000);
-
-    //跳转到应用程序
-    int_bootloader_jump_to_app();
+    //应用层状态机：指令解析 / 擦除 A 区 / 烧录 / 校验 / 跳转 APP
+    app_boot_poll();
 
     /* USER CODE END WHILE */
 
